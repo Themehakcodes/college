@@ -1,91 +1,129 @@
 <template>
-    <div>
-      <!-- Header / Navbar -->
-      <header class="bg-blue-500 text-white">
-        <nav class="container mx-auto flex items-center justify-between p-4">
-          <!-- Logo -->
-          <div class="text-2xl font-bold">
-            <a href="/" class="hover:text-blue-300 transition-colors duration-300">My Website</a>
-          </div>
-  
-          <!-- Navigation Links (hidden on small screens, visible on large screens) -->
-          <ul class="hidden md:flex space-x-6">
-            <li><a href="/" class="hover:text-blue-300 transition-colors duration-300">Home</a></li>
-            <li><a href="/about" class="hover:text-blue-300 transition-colors duration-300">About</a></li>
-            <li><a href="/services" class="hover:text-blue-300 transition-colors duration-300">Services</a></li>
-            <li><a href="/contact" class="hover:text-blue-300 transition-colors duration-300">Contact</a></li>
-          </ul>
-  
-          <!-- Mobile Menu Button (visible on small screens) -->
-          <div class="md:hidden">
-            <button @click="toggleMenu" class="focus:outline-none">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 transition-transform duration-300"
-                :class="{ 'rotate-90': isMenuOpen }"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </nav>
-  
-        <!-- Mobile Menu Dropdown (visible when the button is clicked) -->
-        <transition
-          enter-active-class="transition-transform duration-300 ease-out"
-          enter-from-class="translate-y-full"
-          enter-to-class="translate-y-0"
-          leave-active-class="transition-transform duration-300 ease-in"
-          leave-from-class="translate-y-0"
-          leave-to-class="translate-y-full"
-        >
-          <div v-if="isMenuOpen" class="md:hidden bg-blue-600 text-white p-4">
-            <ul class="space-y-4">
-              <li><a href="/" class="block hover:text-blue-300 transition-colors duration-300">Home</a></li>
-              <li><a href="/about" class="block hover:text-blue-300 transition-colors duration-300">About</a></li>
-              <li><a href="/services" class="block hover:text-blue-300 transition-colors duration-300">Services</a></li>
-              <li><a href="/contact" class="block hover:text-blue-300 transition-colors duration-300">Contact</a></li>
-            </ul>
-          </div>
-        </transition>
-      </header>
-  
-      <!-- Main content slot where page content will be rendered -->
-      <main class="p-4">
-        <router-view></router-view>
-      </main>
-  
-      <!-- Footer -->
-      <footer class="bg-gray-200 text-center p-4 mt-8">
-        <p>© 2024 My Website</p>
-      </footer>
+  <div class="min-h-screen flex flex-col">
+    <!-- Subnav -->
+    <div v-if="!isMobile" class="fixed top-0 left-0 w-full z-40 border-b border-gray-300 bg-white">
+      <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <Subnav :links="subnavLinks" />
+      </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'MainLayout',
-    data() {
-      return {
-        isMenuOpen: false, // State to manage mobile menu visibility
-      };
+
+    <!-- Header / Navbar -->
+    <header :class="{'top-0': isMobile, 'top-16': !isMobile}" class="fixed left-0 w-full z-50 bg-white">
+      <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <Navbar :links="navLinks" buttonText="Sign Up" />
+      </div>
+    </header>
+
+    <!-- Main content slot where page content will be rendered -->
+    <main :class="{'pt-16': isMobile, 'pt-24': !isMobile}" class="flex-grow">
+      <!-- Adjust pt-16 or pt-24 to push content below the fixed navbar and subnav -->
+      <div class="max-w-full mx-auto px-4 mt-40 sm:px-6 lg:px-8">
+        <router-view></router-view>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 text-center p-4">
+      <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <p>© 2024 My Website</p>
+      </div>
+    </footer>
+  </div>
+</template>
+
+<script>
+import Navbar from '../Models/Navbar/DefaultNavbar.vue'
+import Subnav from '../Models/Navbar/SubNav.vue'
+
+export default {
+  name: 'MainLayout',
+  components: {
+    Navbar,
+    Subnav,
+  },
+  data() {
+    return {
+      isMenuOpen: false,
+      isMobile: false,
+      subnavLinks: [
+        { text: 'Overview', url: '/overview' },
+        { text: 'Details', url: '/details' },
+        { text: 'Reports', url: '/reports' },
+      ],
+      navLinks: [
+        { text: 'Home', url: '/', icon: 'ri-home-3-line text-lg' },
+        { text: 'About Us', url: '/about' },
+        { text: 'Services', url: '/services' },
+        { text: 'Contact', url: '/contact' },
+      ],
+    };
+  },
+  mounted() {
+    this.checkMobile();
+    window.addEventListener('resize', this.checkMobile);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkMobile);
+  },
+  methods: {
+    checkMobile() {
+      this.isMobile = window.innerWidth <= 768;
     },
-    methods: {
-      toggleMenu() {
-        this.isMenuOpen = !this.isMenuOpen; // Toggle the menu on mobile
-      },
-      closeMenu() {
-        this.isMenuOpen = false; // Close the menu
-      },
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
     },
-    watch: {
-      // Watch for route changes and close the mobile menu
-      $route(to, from) {
-        this.closeMenu();
-      },
+    closeMenu() {
+      this.isMenuOpen = false;
     },
-  };
-  </script>
+  },
+  watch: {
+    $route() {
+      this.closeMenu();
+    },
+  },
+};
+</script>
+
+<style scoped>
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+footer {
+  width: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+/* Adjust for mobile screens */
+@media (max-width: 768px) {
+  .fixed.top-0.left-0.w-full.z-40 {
+    display: none;
+  }
+}
+</style>
