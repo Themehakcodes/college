@@ -1,90 +1,77 @@
-<script setup>
-import Checkbox from '@/Components/Checkbox.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-
-defineProps({
-    canResetPassword: Boolean,
-    status: String,
-});
-
-const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
-});
-
-const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
-    });
-};
-</script>
-
 <template>
-    <GuestLayout>
-        <Head title="Log in" />
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
+    <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+      </div>
+  
+      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form @submit.prevent="handleLogin">
+            <InputField id="email" label="Email" v-model="form.email" type="email" />
+            <InputField id="password" label="Password" v-model="form.password" type="password" />
+  
+            <div class="mt-6">
+              <SubmitButton label="Login" />
+            </div>
+  
+            <div v-if="error" class="mt-4 text-red-500 text-sm">
+              {{ error }}
+            </div>
+          </form>
         </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
-</template>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import InputField from '../../Models/Inputs/InputField.vue';
+  import SubmitButton from '../../Models/Buttons/SubmitButton.vue';
+  import axios from 'axios';
+  import { useRouter } from 'vue-router';
+  
+  export default {
+    components: {
+      InputField,
+      SubmitButton,
+    },
+    data() {
+      return {
+        form: {
+          email: '',
+          password: ''
+        },
+        error: ''  // Add an error field to show login errors
+      };
+    },
+    methods: {
+      async handleLogin() {
+        try {
+          // CSRF Token for security (useful if you're not using Inertia or SPA)
+          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+          
+          // Make an API call to login
+          const response = await axios.post('/login', this.form, {
+            headers: {
+              'X-CSRF-TOKEN': csrfToken,
+            },
+          });
+  
+          // Save the authentication token or user data to local storage
+          localStorage.setItem('auth_token', response.data.token); // Adjust based on your API response
+  
+          // Redirect to the intended path or default to home
+          const redirectPath = this.$route.query.redirect || '/dashboard';
+          this.$router.push(redirectPath);
+        } catch (error) {
+          console.error('Login failed:', error);
+          this.error = 'Login failed. Please check your credentials and try again.';
+        }
+      }
+    }
+  }
+  </script>
+  
+  <style scoped>
+  /* Optional: Add extra styles if necessary */
+  </style>
+  

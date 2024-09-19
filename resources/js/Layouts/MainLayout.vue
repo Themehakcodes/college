@@ -11,14 +11,13 @@
     <header :class="{'top-0': isMobile, 'top-16': !isMobile}" class="fixed left-0 w-full z-50 bg-white">
       <div class="max-w-full mx-auto px-4 ">
         <div class="flex justify-between items-center">
-          <Navbar :links="navLinks" buttonText="Sign Up" />
-
-          <!-- Mobile Menu Button -->
-          <button v-if="isMobile" @click="toggleMenu" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          </button>
+          <Navbar :links="[
+      { text: 'Home', url: '/', icon: 'ri-home-3-line text-lg' },
+      { text: 'About Us', url: '/about' },
+      { text: 'Services', url: '/services' },
+      { text: 'Contact', url: '/contact' },
+      { text: 'Login', url: '/Login' },
+    ]" />
         </div>
       </div>
       
@@ -39,7 +38,7 @@
 
     <!-- Main content slot where page content will be rendered -->
     <main :class="{'pt-16': isMobile, 'pt-24': !isMobile}" class="flex-grow">
-      <div class="max-w-full mx-auto px-4 mt-40 sm:px-6 lg:px-8">
+      <div class="max-w-full mx-auto px-4 mt-4 sm:px-6 lg:px-8">
         <router-view></router-view>
       </div>
     </main>
@@ -78,6 +77,7 @@ export default {
         { text: 'Services', url: '/services' },
         { text: 'Contact', url: '/contact' },
       ],
+      
     };
   },
   mounted() {
