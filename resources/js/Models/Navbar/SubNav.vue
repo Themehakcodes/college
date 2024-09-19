@@ -2,7 +2,7 @@
     <nav
       class="bg-gray-100 border-b border-gray-300 android-hidden"
     >
-      <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-full mx-auto px-2 sm:px-6 lg:px-8">
         <div class="flex items-center space-x-4 py-2">
           <template v-for="link in links" :key="link.text">
             <a
