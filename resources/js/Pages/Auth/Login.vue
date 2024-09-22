@@ -65,6 +65,7 @@
         } catch (error) {
           console.error('Login failed:', error);
           this.error = 'Login failed. Please check your credentials and try again.';
+          
         }
       }
     }
