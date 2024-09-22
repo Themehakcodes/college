@@ -50,7 +50,7 @@
           const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
           
           // Make an API call to login
-          const response = await axios.post('/login', this.form, {
+          const response = await axios.post('/api/login', this.form, {
             headers: {
               'X-CSRF-TOKEN': csrfToken,
             },

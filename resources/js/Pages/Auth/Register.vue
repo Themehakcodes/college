@@ -47,7 +47,7 @@
     methods: {
       async handleRegister() {
         try {
-          const response = await axios.post('/register', this.form);
+          const response = await axios.post('/api/register', this.form);
           const { token, user } = response.data;
   
           // Store the token (e.g., in local storage)
