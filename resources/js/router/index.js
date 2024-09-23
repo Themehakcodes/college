@@ -6,6 +6,7 @@ import Register from '@/Pages/Auth/Register.vue';    // Import the Register page
 import Dashboard from '@/Pages/Dashboard.vue';        // Import the Dashboard page
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'; // Import authenticated layout
 import Students from '@/Pages/Students/Students.vue';
+import AddNewStudent from '@/Pages/Students/AddNewStudent.vue';
 
 // Define public routes
 const publicRoutes = [
@@ -49,7 +50,14 @@ const authRoutes = [
         name:'students',
         component:Students,
       meta:{requiresAuth:true},
-      }
+      },
+      {
+        path:'/students/add-new',
+        name:'AddnewStudent',
+        component:AddNewStudent,
+      meta:{requiresAuth:true},
+      },
+      
     ],
   },
 ];
