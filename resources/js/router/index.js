@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+<<<<<<< HEAD
 import MainLayout from '../Layouts/MainLayout.vue';  // Import the layout for public routes
 import Home from '../Pages/Homepage.vue';            // Import the Home page
 import Login from '@/Pages/Auth/Login.vue';          // Import the Login page
@@ -6,6 +7,15 @@ import Register from '@/Pages/Auth/Register.vue';    // Import the Register page
 import Dashboard from '@/Pages/Dashboard.vue';        // Import the Dashboard page
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'; // Import authenticated layout
 import Students from '@/Pages/Students/Students.vue';
+=======
+import MainLayout from '../Layouts/MainLayout.vue';  // Layout for public routes
+import Home from '../Pages/Homepage.vue';            // Home page
+import Login from '@/Pages/Auth/Login.vue';          // Login page
+import Register from '@/Pages/Auth/Register.vue';    // Register page
+import Dashboard from '@/Pages/Dashboard.vue';        // Dashboard page
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'; // Authenticated layout
+import AddNewStudent from '@/Pages/Students/AddNewStudent.vue'; // Add New Student page
+>>>>>>> a6d1d9d1603f80a5fa215c468f43e0b7c8dcc0e2
 
 // Define public routes
 const publicRoutes = [
@@ -45,11 +55,19 @@ const authRoutes = [
         meta: { requiresAuth: true }, // Requires authentication
       },
       {
+<<<<<<< HEAD
         path:'/students',
         name:'students',
         component:Students,
       meta:{requiresAuth:true},
       }
+=======
+        path: '/students/add-new', // Nested path (no leading slash)
+        name: 'AddNewStudent',
+        component: AddNewStudent,
+        meta: { requiresAuth: true }, // Requires authentication
+      },
+>>>>>>> a6d1d9d1603f80a5fa215c468f43e0b7c8dcc0e2
     ],
   },
 ];
