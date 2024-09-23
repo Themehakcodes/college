@@ -13,6 +13,12 @@
                   to="/dashboard"
                   class="block py-2 px-4 hover:bg-gray-700">
                   Home
+                </router-link></li>
+              <li>
+                <router-link 
+                  to="/students"
+                  class="block py-2 px-4 hover:bg-gray-700">
+                  Students
                 </router-link>
               </li>
               <!-- Add more sidebar links here -->

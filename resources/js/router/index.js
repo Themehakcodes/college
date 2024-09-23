@@ -5,6 +5,7 @@ import Login from '@/Pages/Auth/Login.vue';          // Import the Login page
 import Register from '@/Pages/Auth/Register.vue';    // Import the Register page
 import Dashboard from '@/Pages/Dashboard.vue';        // Import the Dashboard page
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'; // Import authenticated layout
+import Students from '@/Pages/Students/Students.vue';
 
 // Define public routes
 const publicRoutes = [
@@ -43,6 +44,12 @@ const authRoutes = [
         component: Dashboard,
         meta: { requiresAuth: true }, // Requires authentication
       },
+      {
+        path:'/students',
+        name:'students',
+        component:Students,
+      meta:{requiresAuth:true},
+      }
     ],
   },
 ];

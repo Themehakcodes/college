@@ -55,22 +55,21 @@
               'X-CSRF-TOKEN': csrfToken,
             },
           });
-  
+
           // Save the authentication token or user data to local storage
-          localStorage.setItem('auth_token', response.data.token); // Adjust based on your API response
-  
+          localStorage.setItem('auth_token', response.data.token); // Adjust based on your API responsW
           // Redirect to the intended path or default to home
           const redirectPath = this.$route.query.redirect || '/dashboard';
           this.$router.push(redirectPath);
         } catch (error) {
           console.error('Login failed:', error);
           this.error = 'Login failed. Please check your credentials and try again.';
+          
         }
       }
     }
   }
-  </script>
-  
+  </script> 
   <style scoped>
   /* Optional: Add extra styles if necessary */
   </style>
