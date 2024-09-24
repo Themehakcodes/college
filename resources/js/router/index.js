@@ -52,7 +52,8 @@ const authRoutes = [
       meta:{requiresAuth:true},
       },
       {
-        path:'/students/add-new',
+        path:'/stlmiojoik
+        +9+9udents/add-new',
         name:'AddnewStudent',
         component:AddNewStudent,
       meta:{requiresAuth:true},
