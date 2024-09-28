@@ -1,11 +1,11 @@
 <template>
-    <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">Sign in to your account</h2>
       </div>
   
       <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
           <form @submit.prevent="handleLogin">
             <InputField id="email" label="Email" v-model="form.email" type="email" />
             <InputField id="password" label="Password" v-model="form.password" type="password" />
@@ -14,7 +14,7 @@
               <SubmitButton label="Login" />
             </div>
   
-            <div v-if="error" class="mt-4 text-red-500 text-sm">
+            <div v-if="error" class="mt-4 text-sm text-red-500">
               {{ error }}
             </div>
           </form>
@@ -50,7 +50,7 @@
           const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
           
           // Make an API call to login
-          const response = await axios.post('/login', this.form, {
+          const response = await axios.post('/api/login', this.form, {
             headers: {
               'X-CSRF-TOKEN': csrfToken,
             },

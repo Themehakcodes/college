@@ -41,6 +41,10 @@ Route::post('/login', function (Request $request) {
 });
 
 
+use App\Http\Controllers\StudentController;
+
+Route::post('/student', [StudentController::class, 'store']);
+
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 
